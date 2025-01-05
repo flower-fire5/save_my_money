@@ -1,0 +1,48 @@
+PODS:
+  - BRPickerView (2.2.1)
+  - JZNavigationExtension (2.1)
+  - LookinServer (1.2.8):
+    - LookinServer/Core (= 1.2.8)
+  - LookinServer/Core (1.2.8)
+  - Masonry (1.1.0)
+  - MJExtension (3.4.2)
+  - ReactiveObjC (3.1.1)
+  - YYImage (1.0.4):
+    - YYImage/Core (= 1.0.4)
+  - YYImage/Core (1.0.4)
+  - YYText (1.0.7)
+
+DEPENDENCIES:
+  - BRPickerView (= 2.2.1)
+  - JZNavigationExtension
+  - LookinServer
+  - Masonry
+  - MJExtension
+  - ReactiveObjC
+  - YYImage
+  - YYText
+
+SPEC REPOS:
+  trunk:
+    - BRPickerView
+    - JZNavigationExtension
+    - LookinServer
+    - Masonry
+    - MJExtension
+    - ReactiveObjC
+    - YYImage
+    - YYText
+
+SPEC CHECKSUMS:
+  BRPickerView: 0590a8c5de9bd98c6b4e4f117a3dff6de287d5b2
+  JZNavigationExtension: 45284fc63ba48a9e55b020656d39c86b01ff6a63
+  LookinServer: 1b2b61c6402ae29fa22182d48f5cd067b4e99e80
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJExtension: e97d164cb411aa9795cf576093a1fa208b4a8dd8
+  ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
+  YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
+
+PODFILE CHECKSUM: 837258a7b07cb325641304c4bde27ebb53e32eca
+
+COCOAPODS: 1.16.2
