@@ -89,34 +89,44 @@
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left).offset(15);
         make.width.equalTo(@42);
-        make.bottom.equalTo(self.mas_bottom);
+        make.height.equalTo(self.mas_height).multipliedBy(0.2);
     }];
     
     [self.moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.right.equalTo(self.mas_right).offset(-15);
         make.width.equalTo(@120);
-        make.bottom.equalTo(self.mas_bottom);
+        make.height.equalTo(self.mas_height).multipliedBy(0.2);
     }];
 
     [self.markField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.nameLab.mas_right).offset(10);
         make.right.equalTo(self.moneyLab.mas_left).offset(10);
-        make.bottom.equalTo(self.mas_bottom);
+        make.height.equalTo(self.mas_height).multipliedBy(0.2);
     }];
 
     [self.textContent mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
-        make.height.mas_equalTo(60);
+        make.height.equalTo(self.mas_height).multipliedBy(0.2);
     }];
 }
 
 - (void)createBtn {
-    CGFloat buttonWidth = self.frame.size.width / 4; // 4 columns
-    CGFloat buttonHeight = self.frame.size.height / 5; // 5 rows
+    UIView *btnContainer = [[UIView alloc] init];
+    [self addSubview:btnContainer];
+    
+    // Masonry for button container
+    [btnContainer mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.textContent.mas_bottom);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.bottom.equalTo(self.mas_bottom); // Fills remaining space
+    }];
+    
+
     NSArray *titles = @[
         @"7", @"8", @"9", @"今天",
         @"4", @"5", @"6", @"+",
@@ -130,12 +140,12 @@
         @(POINT_TAG), @(0), @(FINISH_TAG)
     ];
     
+    NSInteger rowCount = 5; // 5 rows
+    NSInteger columnCount = 4; // 4 columns
+    
     for (NSInteger i = 0; i < titles.count; i++) {
-        NSInteger row = i / 4;
-        NSInteger column = i % 4;
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(column * buttonWidth, row * buttonHeight, buttonWidth, buttonHeight);
         btn.tag = [tags[i] integerValue];
         [btn.titleLabel setFont:[UIFont systemFontOfSize:AdjustFont(14)]];
         
@@ -159,8 +169,60 @@
         [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         
         [self addSubview:btn];
+        
+        // Calculate position in grid
+        NSInteger row = i / columnCount;
+        NSInteger column = i % columnCount;
+        
+        CGFloat Height = (SCREEN_WIDTH / 5 * 4 + SafeAreaBottomHeight) * 0.8;
+        
+        // Masonry constraints for buttons
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(btnContainer.mas_width).multipliedBy(1.0 / columnCount);
+            make.height.equalTo(btnContainer.mas_height).multipliedBy(1.0 / rowCount);
+            make.left.equalTo(btnContainer.mas_left).offset(column * (UIScreen.mainScreen.bounds.size.width / columnCount));
+            make.top.equalTo(btnContainer.mas_top).offset(row * (Height / rowCount));
+        }];
     }
 }
+
+#pragma mark - 动画
+- (void)show {
+    if (_animation == YES) {
+        return;
+    }
+    _animation = YES;
+    
+    
+    [self setHidden:NO];
+    [UIView animateWithDuration:.3f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self setTop:SCREEN_HEIGHT - self.height];
+    } completion:^(BOOL finished) {
+        [self setAnimation:NO];
+    }];
+}
+- (void)hide {
+    if (_animation == YES) {
+        return;
+    }
+    _animation = YES;
+    
+    [self.markField endEditing:YES];
+    [self setHidden:NO];
+    [UIView animateWithDuration:.3f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self setTop:SCREEN_HEIGHT];
+    } completion:^(BOOL finished) {
+        [self setAnimation:NO];
+    }];
+}
+
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
 
 #pragma mark - 点击
 - (void)btnClick:(UIButton *)btn {

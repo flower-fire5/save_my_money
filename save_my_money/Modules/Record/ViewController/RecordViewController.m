@@ -18,6 +18,7 @@
 #import "RECORD_EVENT.h"
 #import "RecordModel.h"
 #import "CommonValue.h"
+#import <Masonry/Masonry.h>
 
 
 #pragma mark - 声明
@@ -50,24 +51,23 @@
     
     
     
-//    [self bendiData];
+    [self categoryLocalData];
     
     
     if (_model) {
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL is_income = self.model.cmodel.is_income;
             [self.scroll setContentOffset:CGPointMake(SCREEN_WIDTH * is_income, 0) animated:false];
-            [self.navigation setOffsetX:self.scroll.contentOffset.x];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 RecordCategoryCollectionView *collection = self.collections[is_income];
                 NSMutableArray *arrm = [NSMutableArray array];
-//                if (is_income == false) {
-//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_PAY]];
-//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_PAY]];
-//                } else {
-//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_INCOME]];
-//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_INCOME]];
-//                }
+                if (is_income == false) {
+                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_PAY]];
+                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_PAY]];
+                } else {
+                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_INCOME]];
+                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_INCOME]];
+                }
                 [collection setSelectIndex:[NSIndexPath indexPathForRow:[arrm indexOfObject:self.model.cmodel] inSection:0]];
                 [collection reloadData];
                 [self bookClickItem:collection];
@@ -78,36 +78,36 @@
     
 }
 
-//- (void)bendiData {
-//    BKCIncomeModel *model1 = [[BKCIncomeModel alloc] init];
-//    model1.is_income = false;
-//    model1.list = ({
-//        NSMutableArray<BKCModel *> *sysHasPayArr = [NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_PAY];
-//        NSMutableArray<BKCModel *> *cusHasPayArr = [NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_PAY];
-//        NSMutableArray<BKCModel *> *payArr = ({
-//            NSMutableArray *arrm = [NSMutableArray arrayWithArray:sysHasPayArr];
-//            [arrm addObjectsFromArray:cusHasPayArr];
-//            arrm = [BKCModel mj_objectArrayWithKeyValuesArray:arrm];
-//            arrm;
-//        });
-//        payArr;
-//    });
-//    
-//    BKCIncomeModel *model2 = [[BKCIncomeModel alloc] init];
-//    model2.is_income = true;
-//    model2.list = ({
-//        NSMutableArray<BKCModel *> *sysHasIncomeArr = [NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_INCOME];
-//        NSMutableArray<BKCModel *> *cusHasIncomeArr = [NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_INCOME];
-//        NSMutableArray<BKCModel *> *incomeArr = ({
-//            NSMutableArray *arrm = [NSMutableArray arrayWithArray:sysHasIncomeArr];
-//            [arrm addObjectsFromArray:cusHasIncomeArr];
-//            arrm = [BKCModel mj_objectArrayWithKeyValuesArray:arrm];
-//            arrm;
-//        });
-//        incomeArr;
-//    });
-//    [self setModels:@[model1, model2]];
-//}
+- (void)categoryLocalData {
+    BKCIncomeModel *model1 = [[BKCIncomeModel alloc] init];
+    model1.is_income = false;
+    model1.list = ({
+        NSMutableArray<BKCModel *> *sysHasPayArr = [NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_PAY];
+        NSMutableArray<BKCModel *> *cusHasPayArr = [NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_PAY];
+        NSMutableArray<BKCModel *> *payArr = ({
+            NSMutableArray *arrm = [NSMutableArray arrayWithArray:sysHasPayArr];
+            [arrm addObjectsFromArray:cusHasPayArr];
+            arrm = [BKCModel mj_objectArrayWithKeyValuesArray:arrm];
+            arrm;
+        });
+        payArr;
+    });
+    
+    BKCIncomeModel *model2 = [[BKCIncomeModel alloc] init];
+    model2.is_income = true;
+    model2.list = ({
+        NSMutableArray<BKCModel *> *sysHasIncomeArr = [NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_INCOME];
+        NSMutableArray<BKCModel *> *cusHasIncomeArr = [NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_INCOME];
+        NSMutableArray<BKCModel *> *incomeArr = ({
+            NSMutableArray *arrm = [NSMutableArray arrayWithArray:sysHasIncomeArr];
+            [arrm addObjectsFromArray:cusHasIncomeArr];
+            arrm = [BKCModel mj_objectArrayWithKeyValuesArray:arrm];
+            arrm;
+        });
+        incomeArr;
+    });
+    [self setModels:@[model1, model2]];
+}
 
 
 #pragma mark - 请求
@@ -180,6 +180,7 @@
 // 点击导航栏
 - (void)bookClickNavigation:(NSNumber *)index {
     [self.scroll setContentOffset:CGPointMake(SCREEN_WIDTH * [index integerValue], 0) animated:YES];
+    [self.navigation setIndex:[index integerValue]];
 }
 // 点击item
 - (void)bookClickItem:(RecordCategoryCollectionView *)collection {
@@ -221,8 +222,8 @@
         [collection reloadSelectIndex];
         [collection setHeight:SCREEN_HEIGHT - NavigationBarHeight];
     }
-    [self.keyboard hide];
-    [self.navigation setOffsetX:scrollView.contentOffset.x];
+//    [self.keyboard hide];
+//    [self.navigation setOffsetX:scrollView.contentOffset.x];
 }
 
 
@@ -246,8 +247,14 @@
 - (RecordNavigationView *)navigation {
     if (!_navigation) {
         _navigation = [[RecordNavigationView alloc]init];
-        [_navigation initUI];
         [self.view addSubview:_navigation];
+        [_navigation mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.view.mas_top);
+                    make.left.right.equalTo(self.view);
+                    make.height.equalTo(@NavigationBarHeight);
+        }];
+        [_navigation initUI];
+        
     }
     return _navigation;
 }
@@ -273,11 +280,18 @@
     if (!_keyboard) {
         @weakify(self)
         _keyboard = [RecordKeyBoardView init];
+        CGFloat calculatedHeight = SCREEN_WIDTH / 5 * 4 + SafeAreaBottomHeight;
+        [self.view addSubview:_keyboard];
+        [_keyboard mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.equalTo(self.view);
+                    make.bottom.equalTo(self.view.mas_bottom);
+                    make.height.equalTo(@(calculatedHeight));
+        }];
         [_keyboard setComplete:^(NSString *price, NSString *mark, NSDate *date) {
             @strongify(self)
             [self createBookRequest:price mark:mark date:date];
         }];
-        [self.view addSubview:_keyboard];
+        
     }
     return _keyboard;
 }

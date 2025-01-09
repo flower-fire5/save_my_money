@@ -84,6 +84,7 @@
             if (index == 2) {
                 RecordViewController *vc = [[RecordViewController alloc] init];
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                nav.modalPresentationStyle = UIModalPresentationFullScreen; // 设置为全屏
                 [self presentViewController:nav animated:YES completion:^{
                     
                 }];

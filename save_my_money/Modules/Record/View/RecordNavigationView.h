@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RecordNavigationView : UIView
 
 @property (nonatomic, assign) NSInteger index;
-@property (nonatomic, assign) CGFloat offsetX;
 
 - (void)initUI;
 - (void)setIndex:(NSInteger)index;

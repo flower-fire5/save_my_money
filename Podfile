@@ -13,6 +13,7 @@ target 'save_my_money' do
   pod 'BRPickerView', '2.2.1'
   pod 'YYText'
   pod 'YYImage'
+  pod 'Realm'
   pod 'LookinServer', :configurations => ['Debug']
   
 end

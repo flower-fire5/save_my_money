@@ -81,6 +81,7 @@
     return self.model.list.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    [collectionView registerClass:[RecordCategoryCollectionViewCell class] forCellWithReuseIdentifier:@"RecordCategoryCollectionViewCell"];
     RecordCategoryCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RecordCategoryCollectionViewCell" forIndexPath:indexPath];
     [cell initUI];
     cell.model = self.model.list[indexPath.row];
