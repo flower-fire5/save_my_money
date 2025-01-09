@@ -18,6 +18,15 @@
 
 @implementation RecordCategoryCollectionViewCell
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initUI];
+    }
+    return self;
+}
+
 - (void)initUI {
     self.icon = [[UIImageView alloc]init];
     self.lab = [[UILabel alloc]init];

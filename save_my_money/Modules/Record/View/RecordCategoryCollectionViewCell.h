@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RecordCategoryCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, strong) BKCModel *model;
+@property (nonatomic, strong, nullable) BKCModel *model;
 @property (nonatomic, assign, getter=isChoose) BOOL choose;
 
 - (void)initUI;

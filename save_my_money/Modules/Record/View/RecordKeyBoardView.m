@@ -42,6 +42,7 @@
 }
 
 - (void)initUI {
+    [self borderForColor:kColor_BG borderWidth:1.f borderType:UIBorderSideTypeTop];
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setAnimation:NO];
     [self setIsLess:NO];
@@ -65,20 +66,26 @@
     [self.nameLab setFont:[UIFont systemFontOfSize:AdjustFont(14)]];
     [self.nameLab setTextColor:kColor_Text_Gary];
     [self addSubview:self.nameLab];
+    
+    self.textContent = [[UIView alloc] init];
+    [self addSubview:self.textContent];
+    
+    self.moneyLab = [[UILabel alloc] init];
+    [self.moneyLab setFont:[UIFont systemFontOfSize:AdjustFont(18)]];
+    [self.moneyLab setTextColor:[UIColor blackColor]];
+    [self addSubview:self.moneyLab];
 
     self.markField = [[UITextField alloc] init];
     [self.markField setFont:[UIFont systemFontOfSize:AdjustFont(14)]];
     [self.markField setTextColor:kColor_Text_Gary];
     [self.markField setTintColor:kColor_Main_Color];
     [self addSubview:self.markField];
+    self.markField.userInteractionEnabled = YES;
+    self.markField.delegate = self;
 
-    self.moneyLab = [[UILabel alloc] init];
-    [self.moneyLab setFont:[UIFont systemFontOfSize:AdjustFont(18)]];
-    [self.moneyLab setTextColor:[UIColor blackColor]];
-    [self addSubview:self.moneyLab];
+    
 
-    self.textContent = [[UIView alloc] init];
-    [self addSubview:self.textContent];
+    
 
     // 创建按钮
     [self createBtn];
@@ -123,7 +130,7 @@
         make.top.equalTo(self.textContent.mas_bottom);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
-        make.bottom.equalTo(self.mas_bottom); // Fills remaining space
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom); // Fills remaining space
     }];
     
 
@@ -140,7 +147,7 @@
         @(POINT_TAG), @(0), @(FINISH_TAG)
     ];
     
-    NSInteger rowCount = 5; // 5 rows
+    NSInteger rowCount = 4;
     NSInteger columnCount = 4; // 4 columns
     
     for (NSInteger i = 0; i < titles.count; i++) {
@@ -168,13 +175,13 @@
         // Action
         [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         
-        [self addSubview:btn];
+        [btnContainer addSubview:btn];
         
         // Calculate position in grid
         NSInteger row = i / columnCount;
         NSInteger column = i % columnCount;
         
-        CGFloat Height = (SCREEN_WIDTH / 5 * 4 + SafeAreaBottomHeight) * 0.8;
+        CGFloat Height = (SCREEN_WIDTH / 5 * 4 + SafeAreaBottomHeight) * 0.7;
         
         // Masonry constraints for buttons
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {

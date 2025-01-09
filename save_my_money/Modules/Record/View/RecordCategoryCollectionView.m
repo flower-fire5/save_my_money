@@ -32,12 +32,12 @@
         flow.minimumInteritemSpacing = 0;
         flow;
     })];
+    [collection registerClass:[RecordCategoryCollectionViewCell class] forCellWithReuseIdentifier:@"RecordCategoryCollectionViewCell"];
     [collection setShowsVerticalScrollIndicator:NO];
     [collection setShowsHorizontalScrollIndicator:NO];
     [collection setBackgroundColor:kColor_BG];
     [collection setDelegate:collection];
     [collection setDataSource:collection];
-    [collection registerNib:[UINib nibWithNibName:@"BKCCollectionCell" bundle:nil] forCellWithReuseIdentifier:@"BKCCollectionCell"];
 //    [collection setMj_header:[collection mHeader]];
     return collection;
 }
@@ -81,9 +81,7 @@
     return self.model.list.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    [collectionView registerClass:[RecordCategoryCollectionViewCell class] forCellWithReuseIdentifier:@"RecordCategoryCollectionViewCell"];
     RecordCategoryCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RecordCategoryCollectionViewCell" forIndexPath:indexPath];
-    [cell initUI];
     cell.model = self.model.list[indexPath.row];
     cell.choose = [_selectIndex isEqual:indexPath];
     return cell;
