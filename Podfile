@@ -10,7 +10,7 @@ target 'save_my_money' do
   pod 'JZNavigationExtension'
   pod 'ReactiveObjC'
   pod 'MJExtension'
-  pod 'BRPickerView', '2.2.1'
+  pod 'BRPickerView'
   pod 'YYText'
   pod 'YYImage'
   pod 'Realm'

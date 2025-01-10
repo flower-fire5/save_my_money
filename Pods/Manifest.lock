@@ -1,5 +1,30 @@
 PODS:
-  - BRPickerView (2.2.1)
+  - BRPickerView (2.9.1):
+    - BRPickerView/All (= 2.9.1)
+  - BRPickerView/All (2.9.1):
+    - BRPickerView/Default
+    - BRPickerView/Deprecated
+  - BRPickerView/Core (2.9.1)
+  - BRPickerView/DatePicker (2.9.1):
+    - BRPickerView/Core
+  - BRPickerView/Default (2.9.1):
+    - BRPickerView/DatePicker
+    - BRPickerView/TextPicker
+  - BRPickerView/Deprecated (2.9.1):
+    - BRPickerView/Core
+    - BRPickerView/Deprecated/AddressPickerView (= 2.9.1)
+    - BRPickerView/Deprecated/Base (= 2.9.1)
+    - BRPickerView/Deprecated/StringPickerView (= 2.9.1)
+  - BRPickerView/Deprecated/AddressPickerView (2.9.1):
+    - BRPickerView/Core
+    - BRPickerView/Deprecated/Base
+  - BRPickerView/Deprecated/Base (2.9.1):
+    - BRPickerView/Core
+  - BRPickerView/Deprecated/StringPickerView (2.9.1):
+    - BRPickerView/Core
+    - BRPickerView/Deprecated/Base
+  - BRPickerView/TextPicker (2.9.1):
+    - BRPickerView/Core
   - JZNavigationExtension (2.1)
   - LookinServer (1.2.8):
     - LookinServer/Core (= 1.2.8)
@@ -16,7 +41,7 @@ PODS:
   - YYText (1.0.7)
 
 DEPENDENCIES:
-  - BRPickerView (= 2.2.1)
+  - BRPickerView
   - JZNavigationExtension
   - LookinServer
   - Masonry
@@ -39,7 +64,7 @@ SPEC REPOS:
     - YYText
 
 SPEC CHECKSUMS:
-  BRPickerView: 0590a8c5de9bd98c6b4e4f117a3dff6de287d5b2
+  BRPickerView: 6dd69ea2c48e0a0abf1d197a705050e13143ee63
   JZNavigationExtension: 45284fc63ba48a9e55b020656d39c86b01ff6a63
   LookinServer: 1b2b61c6402ae29fa22182d48f5cd067b4e99e80
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -49,6 +74,6 @@ SPEC CHECKSUMS:
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 7a1aa72951af019add37a54b7c1342bd0c8b8f67
+PODFILE CHECKSUM: 0f02854e033a42ed1f357194defd0a9d4e87dbc2
 
 COCOAPODS: 1.16.2
