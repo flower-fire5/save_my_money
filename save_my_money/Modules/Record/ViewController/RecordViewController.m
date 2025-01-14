@@ -54,27 +54,27 @@
     [self categoryLocalData];
     
     
-    if (_model) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            BOOL is_income = self.model.cmodel.is_income;
-            [self.scroll setContentOffset:CGPointMake(SCREEN_WIDTH * is_income, 0) animated:false];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                RecordCategoryCollectionView *collection = self.collections[is_income];
-                NSMutableArray *arrm = [NSMutableArray array];
-                if (is_income == false) {
-                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_PAY]];
-                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_PAY]];
-                } else {
-                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_INCOME]];
-                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_INCOME]];
-                }
-                [collection setSelectIndex:[NSIndexPath indexPathForRow:[arrm indexOfObject:self.model.cmodel] inSection:0]];
-                [collection reloadData];
-                [self bookClickItem:collection];
-                [self.keyboard setModel:self.model];
-            });
-        });
-    }
+//    if (_model) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            BOOL is_income = self.model.cmodel.is_income;
+//            [self.scroll setContentOffset:CGPointMake(SCREEN_WIDTH * is_income, 0) animated:false];
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                RecordCategoryCollectionView *collection = self.collections[is_income];
+//                NSMutableArray *arrm = [NSMutableArray array];
+//                if (is_income == false) {
+//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_PAY]];
+//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_PAY]];
+//                } else {
+//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_SYS_HAS_INCOME]];
+//                    [arrm addObjectsFromArray:[NSUserDefaults objectForKey:PIN_CATE_CUS_HAS_INCOME]];
+//                }
+//                [collection setSelectIndex:[NSIndexPath indexPathForRow:[arrm indexOfObject:self.model.cmodel] inSection:0]];
+//                [collection reloadData];
+//                [self bookClickItem:collection];
+//                [self.keyboard setModel:self.model];
+//            });
+//        });
+//    }
     
 }
 
@@ -113,46 +113,50 @@
 #pragma mark - 请求
 // 记账
 - (void)createBookRequest:(NSString *)price mark:(NSString *)mark date:(NSDate *)date {
+    if ([price isEqualToString:@"0"]) {
+        if (self.navigationController.viewControllers.count != 1) {
+            [self.navigationController popViewControllerAnimated:true];
+        } else {
+            [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            }];
+        }
+        return;
+    }
     NSInteger index = self.scroll.contentOffset.x / SCREEN_WIDTH;
     RecordCategoryCollectionView *collection = self.collections[index];
     BKCModel *cmodel = collection.model.list[collection.selectIndex.row];
-    RecordModel *model = [[RecordModel alloc] init];
     
-    model.Id = [[RecordModel getId] integerValue];
-    model.price = [[NSDecimalNumber decimalNumberWithString:price] doubleValue];
-    model.year = date.year;
-    model.month = date.month;
-    model.day = date.day;
-    model.mark = mark;
-    model.category_id = cmodel.Id;
-    model.cmodel = cmodel;
+    RLMRealm *realm = [RLMRealm defaultRealm];
     
-    // 新增
-    if (!_model) {
-        // 添加记账
-//        [NSUserDefaults insertBookModel:model];
-    }
-    // 修改
-    else {
-        _model.price = [price floatValue];
-        _model.year = date.year;
-        _model.month = date.month;
-        _model.day = date.day;
-        _model.mark = mark;
-        _model.category_id = cmodel.Id;
-        _model.cmodel = cmodel;
-        model = _model;
-        // 修改记账
-//        [NSUserDefaults replaceBookModel:model];
-    }
+    [realm transactionWithBlock:^{
+        RecordModel *model;
+        
+        model = [[RecordModel alloc] init];
+        model.Id = [[RecordModel getId] integerValue];
+        
+        // 设置数据
+        model.price = [[NSDecimalNumber decimalNumberWithString:price] doubleValue];
+        model.year = date.year;
+        model.month = date.month;
+        model.day = date.day;
+        model.mark = mark;
+        model.category_id = cmodel.Id;
+        model.is_income = cmodel.is_income;
+        model.name = cmodel.name;
+        model.icon_l = cmodel.icon_l;
+        model.icon_n = cmodel.icon_n;
+        model.icon_s = cmodel.icon_s;
+        
+        [realm addOrUpdateObject:model];
+    }];
     
+//    RLMResults<RecordModel *> *results = [RecordModel allObjects];
+    [[NSNotificationCenter defaultCenter] postNotificationName:RECORD_NEW_ITEM object:nil];
     
     if (self.navigationController.viewControllers.count != 1) {
         [self.navigationController popViewControllerAnimated:true];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NOT_BOOK_COMPLETE object:model];
     } else {
         [self.navigationController dismissViewControllerAnimated:YES completion:^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:NOT_BOOK_COMPLETE object:model];
         }];
     }
 }

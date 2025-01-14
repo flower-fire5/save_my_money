@@ -30,7 +30,9 @@ PODS:
     - LookinServer/Core (= 1.2.8)
   - LookinServer/Core (1.2.8)
   - Masonry (1.1.0)
+  - MGSwipeTableCell (1.6.8)
   - MJExtension (3.4.2)
+  - MJRefresh (3.1.15.7)
   - ReactiveObjC (3.1.1)
   - Realm (20.0.1):
     - Realm/Headers (= 20.0.1)
@@ -45,7 +47,9 @@ DEPENDENCIES:
   - JZNavigationExtension
   - LookinServer
   - Masonry
+  - MGSwipeTableCell (= 1.6.8)
   - MJExtension
+  - MJRefresh (= 3.1.15.7)
   - ReactiveObjC
   - Realm
   - YYImage
@@ -57,7 +61,9 @@ SPEC REPOS:
     - JZNavigationExtension
     - LookinServer
     - Masonry
+    - MGSwipeTableCell
     - MJExtension
+    - MJRefresh
     - ReactiveObjC
     - Realm
     - YYImage
@@ -68,12 +74,14 @@ SPEC CHECKSUMS:
   JZNavigationExtension: 45284fc63ba48a9e55b020656d39c86b01ff6a63
   LookinServer: 1b2b61c6402ae29fa22182d48f5cd067b4e99e80
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MGSwipeTableCell: dc4eca3212ed38a563b27d6aa7b3c01ce656c1e2
   MJExtension: e97d164cb411aa9795cf576093a1fa208b4a8dd8
+  MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
   Realm: 9572204903ef28caeb3c03bb30c1147f354ee3e7
   YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 0f02854e033a42ed1f357194defd0a9d4e87dbc2
+PODFILE CHECKSUM: e52f2c5cba7380cc73c064bcd9e6d531fee1118a
 
 COCOAPODS: 1.16.2

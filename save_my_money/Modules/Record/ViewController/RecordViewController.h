@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RecordViewController : BaseViewController
 
-@property (nonatomic, strong) RecordModel *model;
+//@property (nonatomic, strong) RecordModel *model;
 
 @end
 

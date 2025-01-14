@@ -17,7 +17,8 @@
 #import <JZNavigationExtension/JZNavigationExtension.h>
 #import <BRPickerView/BRPickerView.h>
 #import <MJExtension/MJExtension.h>
-
+#import <MGSwipeTableCell/MGSwipeTableCell.h>
+#import <MJRefresh/MJRefresh.h>
 
 //================================= Category =================================//
 #import "NSString+Extension.h"
@@ -43,10 +44,10 @@
 #import "UIResponder+QFEventHandle.h"
 //#import "UIScrollView+Extension.h"
 #import "UITableView+Extension.h"
-//#import "UITableViewCell+Extension.h"
+#import "UITableViewCell+Extension.h"
 //#import "UIView+JGProgressHUD.h"
 //#import "UIWindow+JGProgressHUD.h"
-//#import "UITableViewCell+Extension.h"
+#import "UITableViewCell+Extension.h"
 #import "UIViewController+Extension.h"
 //#import "ZLPhotoActionSheet+Extension.h"
 //#import "CALayer+Extension.h"

@@ -10,86 +10,86 @@
 
 @implementation RecordModel
 
-+ (void)load {
-    [RecordModel mj_setupIgnoredPropertyNames:^NSArray *{
-        return @[@"date"];
-    }];
+//+ (void)load {
+//    [RecordModel mj_setupIgnoredPropertyNames:^NSArray *{
+//        return @[@"date"];
+//    }];
+//}
+//
+//- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+//    self = [super init];
+//    if (!self) {
+//        return nil;
+//    }
+//    self = [NSObject decodeClass:self decoder:aDecoder];
+//    return self;
+//}
+
+//- (void)encodeWithCoder:(NSCoder *)aCoder {
+//    [NSObject encodeClass:self encoder:aCoder];
+//}
+//
+//- (instancetype)copyWithZone:(NSZone *)zone {
+//    RecordModel *model = [[[self class] allocWithZone:zone] init];
+//    model.category_id = self.category_id;
+//    model.price = self.price;
+//    model.year = self.year;
+//    model.month = self.month;
+//    model.day = self.day;
+//    model.mark = self.mark;
+//    model.date = self.date;
+//    return model;
+//}
+
++ (NSString *)primaryKey {
+    return @"Id"; // 使用 `Id` 作为主键
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    self = [NSObject decodeClass:self decoder:aDecoder];
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [NSObject encodeClass:self encoder:aCoder];
-}
-
-- (instancetype)copyWithZone:(NSZone *)zone {
-    RecordModel *model = [[[self class] allocWithZone:zone] init];
-    model.Id = self.Id;
-    model.category_id = self.category_id;
-    model.price = self.price;
-    model.year = self.year;
-    model.month = self.month;
-    model.day = self.day;
-    model.week = self.week;
-    model.mark = self.mark;
-    model.dateStr = self.dateStr;
-    model.date = self.date;
-    model.dateNumber = self.dateNumber;
-    model.cmodel = [self.cmodel copy];
-    return model;
-}
-
-- (BOOL)isEqual:(id)object {
-    if (![object isKindOfClass:[RecordModel class]]) {
-        return false;
-    }
-    RecordModel *model = object;
-    if ([self Id] == [model Id]) {
-        return true;
-    }
-    return false;
-}
-
-- (NSString *)dateStr {
-    NSString *str = [NSString stringWithFormat:@"%ld-%02ld-%02ld", _year, _month, _day];
-    NSDate *date = [NSDate dateWithYMD:str];
-    return [NSString stringWithFormat:@"%ld年%02ld月%02ld日   %@", _year, _month, _day, [date dayFromWeekday]];
-}
-
+//- (BOOL)isEqual:(id)object {
+//    if (![object isKindOfClass:[RecordModel class]]) {
+//        return false;
+//    }
+//    RecordModel *model = object;
+//    if ([self Id] == [model Id]) {
+//        return true;
+//    }
+//    return false;
+//}
+//
+//- (NSString *)dateStr {
+//    NSString *str = [NSString stringWithFormat:@"%ld-%02ld-%02ld", _year, _month, _day];
+//    NSDate *date = [NSDate dateWithYMD:str];
+//    return [NSString stringWithFormat:@"%ld年%02ld月%02ld日   %@", _year, _month, _day, [date dayFromWeekday]];
+//}
+//
 - (NSDate *)date {
     return [NSDate dateWithYMD:[NSString stringWithFormat:@"%ld-%02ld-%02ld", _year, _month, _day]];
 }
-
-- (NSInteger)dateNumber {
-    return [[NSString stringWithFormat:@"%ld%02ld%02ld", _year, _month, _day] integerValue];
-}
-
-- (NSInteger)week {
-    return [self.date weekOfYear];
-}
+//
+//- (NSInteger)dateNumber {
+//    return [[NSString stringWithFormat:@"%ld%02ld%02ld", _year, _month, _day] integerValue];
+//}
+//
+//- (NSInteger)week {
+//    return [self.date weekOfYear];
+//}
 
 // 获取Id
-//+ (NSNumber *)getId {
-//    NSNumber *Id = [NSUserDefaults objectForKey:RecordModelId];
-//    if (!Id) {
-//        Id = @(0);
-//    }
-//    Id = @([Id integerValue] + 1);
-//    [NSUserDefaults setObject:Id forKey:RecordModelId];
-//    return Id;
-//}
++ (NSNumber *)getId {
+    NSNumber *Id = [NSUserDefaults objectForKey:RecordModelId];
+    if (!Id) {
+        Id = @(0);
+    }
+    Id = @([Id integerValue] + 1);
+    [NSUserDefaults setObject:Id forKey:RecordModelId];
+    return Id;
+}
 
 
 @end
 
-
+// 提供便捷操作的宏
+RLM_ARRAY_TYPE(RecordModel)
 
 @implementation RecordMonthModel
 
@@ -124,49 +124,50 @@
     return strm;
 }
 
-//+ (NSMutableArray<RecordMonthModel *> *)statisticalMonthWithYear:(NSInteger)year month:(NSInteger)month {
-//    // 根据时间过滤
-//    NSMutableArray<RecordModel *> *bookArr = [NSUserDefaults objectForKey:PIN_BOOK];
-//    NSString *preStr = [NSString stringWithFormat:@"year == %ld AND month == %ld", year, month];
-////    NSPredicate *pre = [NSPredicate predicateWithFormat:preStr];
-////    NSMutableArray<RecordModel *> *models = [NSMutableArray arrayWithArray:[bookArr filteredArrayUsingPredicate:pre]];
-//    NSMutableArray<RecordModel *> *models = [NSMutableArray kk_filteredArrayUsingPredicate:preStr array:bookArr];
-//    
-//    // 统计数据
-//    NSMutableDictionary *dictm = [NSMutableDictionary dictionary];
-//    for (RecordModel *model in models) {
-//        NSString *key = [NSString stringWithFormat:@"%ld-%02ld-%02ld", model.year, model.month, model.day];
-//        // 初始化
-//        if (![[dictm allKeys] containsObject:key]) {
-//            RecordMonthModel *submodel = [[RecordMonthModel alloc] init];
-//            submodel.list = [NSMutableArray array];
-//            submodel.income = 0;
-//            submodel.pay = 0;
-//            submodel.date = [NSDate dateWithYMD:key];
-//            [dictm setObject:submodel forKey:key];
-//        }
-//        // 添加数据
-//        RecordMonthModel *submodel = dictm[key];
-//        [submodel.list addObject:model];
-//        // 收入
-//        if (model.cmodel.is_income == true) {
-//            [submodel setIncome:submodel.income + model.price];
-//        }
-//        // 支出
-//        else {
-//            [submodel setPay:submodel.pay + model.price];
-//        }
-//        [dictm setObject:submodel forKey:key];
-//    }
-//    
-//    // 排序
-//    NSMutableArray<RecordMonthModel *> *arrm = [NSMutableArray arrayWithArray:[dictm allValues]];
-//    arrm = [NSMutableArray arrayWithArray:[arrm sortedArrayUsingComparator:^NSComparisonResult(RecordMonthModel *obj1, RecordMonthModel *obj2) {
-//        return [obj1.dateStr compare:obj2.dateStr];
-//    }]];
-//    return arrm;
-//}
-
++ (NSMutableArray<RecordMonthModel *> *)statisticalMonthWithYear:(NSInteger)year month:(NSInteger)month {
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    
+    // 获取符合条件的 RecordModel 数据
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"year == %ld AND month == %ld", year, month];
+    RLMResults<RecordModel *> *models = [RecordModel objectsInRealm:realm withPredicate:predicate];
+    
+    // 用于按日期分组的字典
+    NSMutableDictionary<NSString *, RecordMonthModel *> *dictm = [NSMutableDictionary dictionary];
+    
+    // 遍历数据并统计
+    for (RecordModel *model in models) {
+        NSString *key = [NSString stringWithFormat:@"%ld-%02ld-%02ld", model.year, model.month, model.day];
+        
+        // 如果字典中没有当天的统计模型，初始化
+        if (!dictm[key]) {
+            RecordMonthModel *submodel = [[RecordMonthModel alloc] init];
+            submodel.date = [NSDate dateWithYMD:key];
+            submodel.list = [NSMutableArray array];
+            submodel.income = 0;
+            submodel.pay = 0;
+            [dictm setObject:submodel forKey:key];
+        }
+        
+        // 获取当天的统计模型
+        RecordMonthModel *submodel = dictm[key];
+        [submodel.list addObject:model];
+        
+        // 累加收入或支出
+        if (model.is_income) {
+            submodel.income += model.price;
+        } else {
+            submodel.pay += model.price;
+        }
+    }
+    
+    // 将统计结果转换为数组，并按日期排序
+    NSMutableArray<RecordMonthModel *> *arrm = [NSMutableArray arrayWithArray:[dictm allValues]];
+    [arrm sortUsingComparator:^NSComparisonResult(RecordMonthModel *obj1, RecordMonthModel *obj2) {
+        return [obj1.date compare:obj2.date];
+    }];
+    
+    return arrm;
+}
 @end
 
 
@@ -188,148 +189,163 @@
 }
 
 // 统计数据(图表首页)
-//+ (RecordChartModel *)statisticalChart:(NSInteger)status isIncome:(BOOL)isIncome cmodel:(RecordModel *)cmodel date:(NSDate *)date {
-//    NSMutableString *preStr = [NSMutableString string];
-//    NSMutableArray *arrm = [NSUserDefaults objectForKey:PIN_BOOK];
-//    [preStr appendFormat:@"cmodel.is_income == %d", isIncome];
-//    if (cmodel) {
-//        [preStr appendFormat:@" AND cmodel.Id == %ld", cmodel.cmodel.Id];
-//    }
-//
-//    // 周
-//    if (status == 0) {
-//        NSDate *start = [date offsetDays:-[date weekday] + 1];
-//        NSDate *end = [date offsetDays:7 - [date weekday]];
-//        NSDateFormatter *fora = [[NSDateFormatter alloc] init];
-//        [fora setDateFormat:@"yyyyMMdd"];
-//        [fora setTimeZone:[NSTimeZone localTimeZone]];
-//        NSInteger startStr = [[fora stringFromDate:start] integerValue];
-//        NSInteger endStr = [[fora stringFromDate:end] integerValue];
-//        
-//        [preStr appendFormat:@" AND dateNumber >= %ld AND dateNumber <= %ld", startStr, endStr];
-//    }
-//    // 月
-//    else if (status == 1) {
-//        [preStr appendFormat:@" AND year == %ld AND month == %ld", date.year, date.month];
-//    }
-//    // 年
-//    else if (status == 2) {
-//        [preStr appendFormat:@" AND year == %ld", date.year];
-//    }
-//    NSMutableArray<RecordModel *> *models = [NSMutableArray kk_filteredArrayUsingPredicate:preStr array:arrm];
-//    
-//    
-//    NSMutableArray<RecordModel *> *chartArr = [NSMutableArray array];
-//    NSMutableArray<NSMutableArray<RecordModel *> *> *chartHudArr = [NSMutableArray array];
-//    // 周
-//    if (status == 0) {
-//        NSDate *first = [date offsetDays:-[date weekday] + 1];
-//        for (int i=0; i<7; i++) {
-//            NSDate *date = [first offsetDays:i];
-//            RecordModel *model = [[RecordModel alloc] init];
-//            model.year = date.year;
-//            model.month = date.month;
-//            model.day = date.day;
-//            model.price = 0;
-//            [chartArr addObject:model];
-//            [chartHudArr addObject:[NSMutableArray array]];
-//        }
-//        
-//        for (RecordModel *model in models) {
-//            NSDecimalNumber *number1 = [NSDecimalNumber decimalNumberWithString:[@(chartArr[7 - [model.date weekday]].price) description]];
-//            NSDecimalNumber *number2 = [NSDecimalNumber decimalNumberWithString:[@(model.price) description]];
-//            number1 = [number1 decimalNumberByAdding:number2];
-//            chartArr[7 - [model.date weekday]].price += [number1 doubleValue];
-//            [chartHudArr[[model.date weekday] - 1] addObject:model];
-//        }
-//    }
-//    // 月
-//    else if (status == 1) {
-//        for (int i=1; i<=[date daysInMonth]; i++) {
-//            RecordModel *model = [[RecordModel alloc] init];
-//            model.year = date.year;
-//            model.month = [date daysInMonth];
-//            model.day = i;
-//            model.price = 0;
-//            [chartArr addObject:model];
-//            [chartHudArr addObject:[NSMutableArray array]];
-//        }
-//        for (RecordModel *model in models) {
-//            chartArr[model.day-1].price += model.price;
-//            [chartHudArr[model.day-1] addObject:model];
-//        }
-//    }
-//    // 年
-//    else if (status == 2) {
-//        for (int i=1; i<=12; i++) {
-//            RecordModel *model = [[RecordModel alloc] init];
-//            model.year = date.year;
-//            model.month = i;
-//            model.day = 1;
-//            model.price = 0;
-//            [chartArr addObject:model];
-//            [chartHudArr addObject:[NSMutableArray array]];
-//        }
-//        for (RecordModel *model in models) {
-//            chartArr[model.month-1].price += model.price;
-//            [chartHudArr[model.month-1] addObject:model];
-//        }
-//    }
-//    
-//    // 排序
-//    for (NSMutableArray *arrm in chartHudArr) {
-//        [arrm sortUsingComparator:^NSComparisonResult(RecordModel *obj1, RecordModel *obj2) {
-//            return obj1.price < obj2.price;
-//        }];
-//    }
-//    
-//    
-//    NSMutableArray<RecordModel *> *groupArr = [NSMutableArray array];
-//    if (!cmodel) {
-//        for (RecordModel *model in models) {
-//            NSInteger index = -1;
-//            for (NSInteger i=0; i<groupArr.count; i++) {
-//                RecordModel *submodel = groupArr[i];
-//                if (submodel.category_id == model.category_id) {
-//                    index = i;
-//                }
-//            }
-//            if (index == -1) {
-//                RecordModel *submodel = [model copy];
-//                [groupArr addObject:submodel];
-//            }
-//            else {
-//                NSDecimalNumber *number1 = [NSDecimalNumber decimalNumberWithString:[@(groupArr[index].price) description]];
-//                NSDecimalNumber *number2 = [NSDecimalNumber decimalNumberWithString:[@(model.price) description]];
-//                number1 = [number1 decimalNumberByAdding:number2];
-//                groupArr[index].price = [number1 doubleValue];
-//                
-////                groupArr[index].price += model.price;
-//            }
-//        }
-//    } else {
-//        for (RecordModel *model in models) {
-//            RecordModel *submodel = [model copy];
-//            [groupArr addObject:submodel];
-//        }
-//    }
-//    
-//    
-//    [groupArr sortUsingComparator:^NSComparisonResult(RecordModel *obj1, RecordModel *obj2) {
-//        return obj1.price < obj2.price;
-//    }];
-//    
-//    
-//    RecordChartModel *model = [[RecordChartModel alloc] init];
-//    model.groupArr = groupArr;
-//    model.chartArr = chartArr;
-//    model.chartHudArr = chartHudArr;
-//    model.sum = [[chartArr valueForKeyPath:@"@sum.price.floatValue"] floatValue];
-//    model.max = [[chartArr valueForKeyPath:@"@max.price.floatValue"] floatValue];
-//    model.avg = [[NSString stringWithFormat:@"%.2f", model.sum / chartArr.count] floatValue];
-//    model.is_income = isIncome;
-//    return model;
-//}
-
++ (RecordChartModel *)statisticalChart:(NSInteger)status isIncome:(BOOL)isIncome cmodel:(RecordModel *)cmodel date:(NSDate *)date {
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    NSMutableString *predicateFormat = [NSMutableString stringWithFormat:@"is_income == %d", isIncome];
+    
+    // 添加分类筛选
+    if (cmodel) {
+        [predicateFormat appendFormat:@" AND category_id == %ld", cmodel.category_id];
+    }
+    
+    // 根据时间范围筛选
+    NSPredicate *predicate = nil;
+    if (status == 0) { // 周
+        NSDate *start = [date offsetDays:-[date weekday] + 1];
+        NSDate *end = [date offsetDays:7 - [date weekday]];
+        
+        predicate = [NSPredicate predicateWithFormat:@"is_income == %d AND ((year == %ld AND month == %ld AND day >= %ld) AND (year == %ld AND month == %ld AND day <= %ld))",
+                     isIncome,
+                     start.year, start.month, start.day,
+                     end.year, end.month, end.day];
+    } else if (status == 1) { // 月
+        predicate = [NSPredicate predicateWithFormat:@"is_income == %d AND year == %ld AND month == %ld",
+                     isIncome,
+                     date.year,
+                     date.month];
+    } else if (status == 2) { // 年
+        predicate = [NSPredicate predicateWithFormat:@"is_income == %d AND year == %ld",
+                     isIncome,
+                     date.year];
+    }
+    
+    RLMResults<RecordModel *> *models = [RecordModel objectsInRealm:realm withPredicate:predicate];
+    
+    // 初始化图表数据
+    NSMutableArray<RecordModel *> *chartArr = [NSMutableArray array];
+    NSMutableArray<NSMutableArray<RecordModel *> *> *chartHudArr = [NSMutableArray array];
+    
+    // 构建不同时间范围的空数据
+    if (status == 0) { // 周
+        NSDate *startOfWeek = [date offsetDays:-[date weekday] + 1];
+        for (int i = 0; i < 7; i++) {
+            NSDate *currentDate = [startOfWeek offsetDays:i];
+            RecordModel *emptyModel = [[RecordModel alloc] init];
+            emptyModel.year = currentDate.year;
+            emptyModel.month = currentDate.month;
+            emptyModel.day = currentDate.day;
+            emptyModel.price = 0;
+            [chartArr addObject:emptyModel];
+            [chartHudArr addObject:[NSMutableArray array]];
+        }
+        
+        for (RecordModel *model in models) {
+            NSInteger dayIndex = model.day - startOfWeek.day;
+            if (dayIndex >= 0 && dayIndex < 7) {
+                chartArr[dayIndex].price += model.price;
+                [chartHudArr[dayIndex] addObject:model];
+            }
+        }
+    } else if (status == 1) { // 月
+        NSInteger daysInMonth = [date daysInMonth];
+        for (int i = 1; i <= daysInMonth; i++) {
+            RecordModel *emptyModel = [[RecordModel alloc] init];
+            emptyModel.year = date.year;
+            emptyModel.month = date.month;
+            emptyModel.day = i;
+            emptyModel.price = 0;
+            [chartArr addObject:emptyModel];
+            [chartHudArr addObject:[NSMutableArray array]];
+        }
+        
+        for (RecordModel *model in models) {
+            NSInteger dayIndex = model.day - 1;
+            chartArr[dayIndex].price += model.price;
+            [chartHudArr[dayIndex] addObject:model];
+        }
+    } else if (status == 2) { // 年
+        for (int i = 1; i <= 12; i++) {
+            RecordModel *emptyModel = [[RecordModel alloc] init];
+            emptyModel.year = date.year;
+            emptyModel.month = i;
+            emptyModel.day = 1;
+            emptyModel.price = 0;
+            [chartArr addObject:emptyModel];
+            [chartHudArr addObject:[NSMutableArray array]];
+        }
+        
+        for (RecordModel *model in models) {
+            NSInteger monthIndex = model.month - 1;
+            chartArr[monthIndex].price += model.price;
+            [chartHudArr[monthIndex] addObject:model];
+        }
+    }
+    
+    // 统计按分类分组的数据
+    NSMutableArray<RecordModel *> *groupArr = [NSMutableArray array];
+    if (!cmodel) {
+        for (RecordModel *model in models) {
+            NSInteger index = -1;
+            for (NSInteger i = 0; i < groupArr.count; i++) {
+                RecordModel *groupModel = groupArr[i];
+                if (groupModel.category_id == model.category_id) {
+                    index = i;
+                }
+            }
+            if (index == -1) {
+                RecordModel *submodel = [[RecordModel alloc] init];
+                submodel.price = model.price;
+                submodel.is_income = model.is_income;
+                submodel.name = model.name;
+                submodel.category_id = model.category_id;
+                submodel.year = model.year;
+                submodel.month = model.month;
+                submodel.day = model.day;
+                submodel.icon_l = model.icon_l;
+                submodel.icon_n = model.icon_n;
+                submodel.icon_s = model.icon_s;
+                [groupArr addObject:submodel];
+            } else {
+                groupArr[index].price += model.price;
+            }
+        }
+    } else {
+        for (RecordModel *model in models) {
+            RecordModel *submodel = [[RecordModel alloc] init];
+            submodel.price = model.price;
+            submodel.is_income = model.is_income;
+            submodel.name = model.name;
+            submodel.category_id = model.category_id;
+            submodel.year = model.year;
+            submodel.month = model.month;
+            submodel.day = model.day;
+            submodel.icon_l = model.icon_l;
+            submodel.icon_n = model.icon_n;
+            submodel.icon_s = model.icon_s;
+            [groupArr addObject:submodel];
+        }
+    }
+    
+    [groupArr sortUsingComparator:^NSComparisonResult(RecordModel *obj1, RecordModel *obj2) {
+        return obj2.price > obj1.price;
+    }];
+    
+    // 计算总额和最大值
+    float sum = [[chartArr valueForKeyPath:@"@sum.price"] floatValue];
+    float max = [[chartArr valueForKeyPath:@"@max.price"] floatValue];
+    float avg = chartArr.count > 0 ? sum / chartArr.count : 0;
+    
+    // 构建最终的统计模型
+    RecordChartModel *chartModel = [[RecordChartModel alloc] init];
+    chartModel.groupArr = groupArr;
+    chartModel.chartArr = chartArr;
+    chartModel.chartHudArr = chartHudArr;
+    chartModel.sum = sum;
+    chartModel.max = max;
+    chartModel.avg = avg;
+    chartModel.is_income = isIncome;
+    
+    return chartModel;
+}
 @end
 

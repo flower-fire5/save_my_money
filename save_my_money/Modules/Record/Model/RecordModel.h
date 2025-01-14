@@ -4,25 +4,31 @@
  */
 
 #import "BKCIncomeModel.h"
-
+#import <Realm/Realm.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 
-@interface RecordModel : NSObject<NSCoding, NSCopying>
+@interface RecordModel : RLMObject
 
-@property (nonatomic, assign) NSInteger Id;
-@property (nonatomic, assign) NSInteger category_id;
-@property (nonatomic, assign) CGFloat price;
-@property (nonatomic, assign) NSInteger year;
-@property (nonatomic, assign) NSInteger month;
-@property (nonatomic, assign) NSInteger day;
-@property (nonatomic, assign) NSInteger week;
-@property (nonatomic, copy  ) NSString *mark;
-@property (nonatomic, copy  ) NSString *dateStr;    // 日期(例: 01月03日 星期五)
+@property NSInteger Id;
+@property double price;
+@property NSInteger year;
+@property NSInteger month;
+@property NSInteger day;
+@property NSString *mark;
+@property NSInteger category_id;
 @property (nonatomic, strong) NSDate *date;         // 日期
-@property (nonatomic, assign) NSInteger dateNumber; // 日期数字
-@property (nonatomic, strong) BKCModel *cmodel;
+@property (nonatomic, assign) BOOL is_income;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *icon_n;
+@property (nonatomic, strong) NSString *icon_l;
+@property (nonatomic, strong) NSString *icon_s;
+
+
+
+// 使用主键
++ (NSString *)primaryKey;
 
 // 获取Id
 + (NSNumber *)getId;

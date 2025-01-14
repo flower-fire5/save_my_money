@@ -14,6 +14,8 @@ target 'save_my_money' do
   pod 'YYText'
   pod 'YYImage'
   pod 'Realm'
+  pod 'MJRefresh', '3.1.15.7'
+  pod 'MGSwipeTableCell', '1.6.8'
   pod 'LookinServer', :configurations => ['Debug']
   
 end

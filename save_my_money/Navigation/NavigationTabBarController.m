@@ -6,8 +6,8 @@
 //
 
 #import "NavigationTabBarController.h"
-#import "BillDetailViewController.h"
-#import "ChartsViewController.h"
+#import "HomeController.h"
+#import "ChartController.h"
 #import "RecordViewController.h"
 #import "BaseViewController.h"
 #import "CalendarViewController.h"
@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    BillDetailViewController *home = [[BillDetailViewController alloc] init];
+    HomeController *home = [[HomeController alloc] init];
     [self addChildViewController:home title:@"明细" image:@"tabbar_detail_n" selImage:@"tabbar_detail_s"];
     
     CalendarViewController *calendar = [[CalendarViewController alloc]init];
@@ -34,7 +34,7 @@
     RecordViewController *record = [[RecordViewController alloc] init];
     [self addChildViewController:record title:@"记账" image:@"tabbar_add_n" selImage:@"tabbar_add_h"];
 
-    ChartsViewController *chart = [[ChartsViewController alloc] init];
+    ChartController *chart = [[ChartController alloc] init];
     [self addChildViewController:chart title:@"图表" image:@"tabbar_chart_n" selImage:@"tabbar_chart_s"];
     
     // TODO: add money box

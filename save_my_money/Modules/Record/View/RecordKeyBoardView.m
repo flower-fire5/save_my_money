@@ -86,8 +86,9 @@
     [self.textContent addSubview:self.markField];
     self.markField.userInteractionEnabled = YES;
     self.markField.delegate = self;
-    [self.markField setText:@"点击填写备注"];
 
+    // 设置占位符
+    self.markField.placeholder = @"点击填写备注";
     // 创建按钮
     [self createBtn];
 }
@@ -339,30 +340,6 @@
 - (void)dateBtnClick:(UIButton *)btn {
     // 时间
     if (btn.tag == DATE_TAG) {
-//        @weakify(self)
-//        NSDate *date = [NSDate date];
-//        NSDate *min = [NSDate br_setYear:2000 month:1 day:1];
-//        NSDate *max = [NSDate br_setYear:date.year + 3 month:12 day:31];
-//        [BRDatePickerView showDatePickerWithTitle:@"选择日期"
-//                                         dateType:BRDatePickerModeYMD
-//                                  defaultSelValue:[self.currentDate formatYMD]
-//                                          minDate:min
-//                                          maxDate:max
-//                                     isAutoSelect:false
-//                                       themeColor:nil
-//                                      resultBlock:^(NSString *selectValue) {
-//            @strongify(self)
-//            [self setCurrentDate:({
-//                NSDateFormatter *fora = [[NSDateFormatter alloc] init];
-//                [fora setDateFormat:@"yyyy-MM-dd"];
-//                NSDate *date = [fora dateFromString:selectValue];
-//                date;
-//            })];
-//            selectValue = [self.currentDate isToday] ? @"今天" : selectValue;
-//            [btn setTitle:selectValue forState:UIControlStateNormal];
-//            [btn setTitle:selectValue forState:UIControlStateHighlighted];
-//            [btn.titleLabel setFont:[UIFont systemFontOfSize:AdjustFont(12)]];
-//        }];
         // 1.创建日期选择器
         BRDatePickerView *datePickerView = [[BRDatePickerView alloc]init];
         // 2.设置属性
@@ -637,9 +614,12 @@
     CGFloat keyHeight = [not.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     
     [UIView animateWithDuration:time delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        // 更新 textContent 的位置
+//        // 更新 textContent 的位置
         CGFloat offsetY = self.height - keyHeight - countcoordinatesX(60);
-        [self.textContent setTop:offsetY];
+//        [self.textContent setTop:offsetY];
+        // 更新父容器（self）的位置
+//        CGFloat parentOffsetY = keyHeight - countcoordinatesX(60); // 或根据需求调整
+        self.transform = CGAffineTransformMakeTranslation(0, offsetY);
     } completion:^(BOOL finished) {
         // 可以在动画完成后做额外处理
     }];
