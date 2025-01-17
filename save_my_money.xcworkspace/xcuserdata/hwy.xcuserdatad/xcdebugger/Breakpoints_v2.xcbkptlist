@@ -250,8 +250,8 @@
             filePath = "save_my_money/Modules/Chart (&#x56fe;&#x8868;)/View/Table/ChartTableCell.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "-setModel:"
             landmarkType = "7">
          </BreakpointContent>
@@ -388,7 +388,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "E8C25F67-B596-48B4-9479-22DF042293B2"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "save_my_money/Modules/Chart (&#x56fe;&#x8868;)/Model/ChartSubModel.m"

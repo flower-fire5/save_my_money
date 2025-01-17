@@ -1,5 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-save_my_money/Pods-save_my_money-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/BRPickerView/BRPickerView.framework
+${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework
 ${BUILT_PRODUCTS_DIR}/JZNavigationExtension/JZNavigationExtension.framework
 ${BUILT_PRODUCTS_DIR}/LookinServer/LookinServer.framework
 ${BUILT_PRODUCTS_DIR}/MGSwipeTableCell/MGSwipeTableCell.framework

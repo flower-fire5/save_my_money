@@ -42,6 +42,7 @@
     [self.lineConstraintH setConstant:countcoordinatesX(5)];
     [self.line.layer setCornerRadius:self.lineConstraintH.constant / 2];
     [self.line.layer setMasksToBounds:true];
+    self.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)prepareForReuse {

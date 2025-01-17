@@ -219,6 +219,7 @@
             height -= self.navigationController.viewControllers.count == 1 ? TabbarHeight : 0;
             CGRectMake(0, top, SCREEN_WIDTH, height);
         })];
+        _table.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:_table];
     }
     return _table;
